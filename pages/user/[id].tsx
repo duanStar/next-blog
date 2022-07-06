@@ -15,7 +15,24 @@ interface UserDetailProps {
   articles: IArticle[]
 }
 
-export async function getServerSideProps({ params }: { params: any }) {
+export async function getStaticPaths() {
+  const AppDataSource = await prepareConnection()
+  const userRepo = AppDataSource.getRepository(User)
+
+  const users = await userRepo.find()
+  const userIds = users.map(user => ({
+    params: {
+      id: `${user.id}`
+    }
+  }))
+
+  return {
+    paths: userIds,
+    fallback: 'blocking'
+  }
+}
+
+export async function getStaticProps({ params }: { params: any }) {
   const userId = params.id
   const AppDataSource = await prepareConnection()
   const userRepo = AppDataSource.getRepository(User)
