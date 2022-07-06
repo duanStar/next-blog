@@ -22,6 +22,11 @@ async function follow(req: NextApiRequest, res: NextApiResponse) {
     return
   }
 
+  if (!userId) {
+    res.status(200).json(EXCEPTION_USER.NOT_LOGIN)
+    return
+  }
+
   const user = await userRepo.findOne({
     where: {
       id: userId
