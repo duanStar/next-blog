@@ -15,24 +15,51 @@ interface UserDetailProps {
   articles: IArticle[]
 }
 
-export async function getStaticPaths() {
-  const AppDataSource = await prepareConnection()
-  const userRepo = AppDataSource.getRepository(User)
+// export async function getStaticPaths() {
+//   const AppDataSource = await prepareConnection()
+//   const userRepo = AppDataSource.getRepository(User)
 
-  const users = await userRepo.find()
-  const userIds = users.map(user => ({
-    params: {
-      id: `${user.id}`
-    }
-  }))
+//   const users = await userRepo.find()
+//   const userIds = users.map(user => ({
+//     params: {
+//       id: `${user.id}`
+//     }
+//   }))
 
-  return {
-    paths: userIds,
-    fallback: 'blocking'
-  }
-}
+//   return {
+//     paths: userIds,
+//     fallback: 'blocking'
+//   }
+// }
 
-export async function getStaticProps({ params }: { params: any }) {
+// export async function getStaticProps({ params }: { params: any }) {
+//   const userId = params.id
+//   const AppDataSource = await prepareConnection()
+//   const userRepo = AppDataSource.getRepository(User)
+//   const articleRepo = AppDataSource.getRepository(Article)
+//   const user = await userRepo.findOne({
+//     where: {
+//       id: Number(userId)
+//     }
+//   })
+//   const articles = await articleRepo.find({
+//     where: {
+//       user: {
+//         id: Number(userId)
+//       }
+//     },
+//     relations: ['user', 'tags']
+//   })
+
+//   return {
+//     props: {
+//       userInfo: JSON.parse(JSON.stringify(user)),
+//       articles: JSON.parse(JSON.stringify(articles))
+//     }
+//   }
+// }
+
+export async function getServerSideProps({ params }: { params: any }) {
   const userId = params.id
   const AppDataSource = await prepareConnection()
   const userRepo = AppDataSource.getRepository(User)
