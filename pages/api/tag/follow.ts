@@ -37,6 +37,7 @@ async function follow(req: NextApiRequest, res: NextApiResponse) {
 
   if (!user) {
     res.status(200).json(EXCEPTION_USER.NOT_LOGIN)
+    return
   }
 
   if (tag?.users && user) {
